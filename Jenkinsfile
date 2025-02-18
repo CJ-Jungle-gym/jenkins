@@ -60,25 +60,25 @@ pipeline {
             }
         }
 
-    //     stage('Publish HTML Report') {
-    //         steps {
-    //             script {
-    //                 // HTML 리포트가 존재하는지 확인하고 리포트를 출력
-    //                 if (fileExists('trivy-report.html')) {
-    //                     publishHTML([
-    //                         allowMissing: false,
-    //                         alwaysLinkToLastBuild: false,
-    //                         keepAll: false,
-    //                         reportDir: '',
-    //                         reportFiles: 'trivy-report.html',  // 리포트 파일 경로
-    //                         reportName: 'Trivy Vulnerability Report'
-    //                     ])
-    //                 } else {
-    //                     echo "Trivy report not found, skipping HTML report publishing"
-    //                 }
-    //             }
-    //         }
-    //     }
+        stage('Publish HTML Report') {
+            steps {
+                script {
+                    // HTML 리포트가 존재하는지 확인하고 리포트를 출력
+                    if (fileExists('trivy-report.html')) {
+                        publishHTML([
+                            allowMissing: false,
+                            alwaysLinkToLastBuild: false,
+                            keepAll: false,
+                            reportDir: '',
+                            reportFiles: 'trivy-report.html',  // 리포트 파일 경로
+                            reportName: 'Trivy Vulnerability Report'
+                        ])
+                    } else {
+                        echo "Trivy report not found, skipping HTML report publishing"
+                    }
+                }
+            }
+        }
 
     //     stage('OWASP Dependency-Check Vulnerabilities') {
     //         steps {
