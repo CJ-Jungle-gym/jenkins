@@ -1,9 +1,6 @@
 //과연...
 pipeline {
     agent any
-    tools {
-        sonarQube 'SonarQube Scanner'
-    }
 
     environment {
         AWS_REGION = 'ap-northeast-2'
