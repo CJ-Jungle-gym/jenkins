@@ -26,7 +26,7 @@ pipeline {
         stage('Build Image') {
             steps {
                 script {
-                    docker.withRegistry("https://${ECR_REPO}/", 'f9a0baba-b98c-4c1f-b8a2-119d23049e32') {
+                    docker.withRegistry("https://${ECR_REPO}/", '9b45eaf4-a184-44eb-ba8c-8e20a854de1b') {
                         myapp = docker.build('jenkins-images')
                     }
                 }
@@ -36,7 +36,7 @@ pipeline {
         stage('Push Image to ECR') {
             steps {
                 script {
-                    docker.withRegistry("https://${ECR_REPO}/", 'f9a0baba-b98c-4c1f-b8a2-119d23049e32') {
+                    docker.withRegistry("https://${ECR_REPO}/", '9b45eaf4-a184-44eb-ba8c-8e20a854de1b') {
                         myapp.push("${IMAGE_TAG}")
                     }
                 }
