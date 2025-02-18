@@ -66,7 +66,7 @@ pipeline {
                     // HTML 리포트가 존재하는지 확인하고 리포트를 출력
                     if (fileExists('trivy-report.html')) {
                         echo "Trivy report found, publishing HTML report"
-                        publishHTML([
+                        publishHTML(target: [
                             allowMissing: false,
                             alwaysLinkToLastBuild: false,
                             keepAll: false,
