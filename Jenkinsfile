@@ -55,7 +55,7 @@ pipeline {
                 script {
                     try {
                         // Trivy로 이미지 스캔하고 HTML 리포트 생성
-                        sh "trivy image --format template --template \"@/root/.cache/html.tpl\" --output trivy-report.html ${ECR_REPO}:${IMAGE_TAG}"
+                        sh "trivy image --format template --template \"@/root/html.tpl\" --output trivy-report.html ${ECR_REPO}:${IMAGE_TAG}"
                         echo "Trivy scan completed"
                     } catch (Exception e) {
                         echo "Trivy scan failed: ${e.getMessage()}"
