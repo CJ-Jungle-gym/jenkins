@@ -95,7 +95,7 @@ pipeline {
      //        }
     	// }
 
-        stage('SonarQube Analysis') {
+        stage('jg-sonarqube') {
             steps {
                 withSonarQubeEnv('SonarQube Scanner') {
                     sh "./gradlew sonar"
