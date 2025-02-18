@@ -44,21 +44,21 @@ pipeline {
         }
         
         // 이미지 스캔
-    //     stage('Scan Image with Trivy') {
-    //         steps {
-    //             script {
-    //                 try {
-    //                     // Trivy로 이미지 스캔하고 HTML 리포트 생성
-    //                     sh "trivy image --format template --output trivy-report.html ${ECR_REPO}:${IMAGE_TAG}"
-    //                     echo "Trivy scan completed"
-    //                 } catch (Exception e) {
-    //                     echo "Trivy scan failed: ${e.getMessage()}"
-    //                     currentBuild.result = 'FAILURE' // 빌드 상태를 실패로 설정
-    //                     throw e // 예외를 던져서 이후 단계를 실행하지 않도록 함
-    //                 }
-    //             }
-    //         }
-    //     }
+        stage('Scan Image with Trivy') {
+            steps {
+                script {
+                    try {
+                        // Trivy로 이미지 스캔하고 HTML 리포트 생성
+                        sh "trivy image --format template --output trivy-report.html ${ECR_REPO}:${IMAGE_TAG}"
+                        echo "Trivy scan completed"
+                    } catch (Exception e) {
+                        echo "Trivy scan failed: ${e.getMessage()}"
+                        currentBuild.result = 'FAILURE' // 빌드 상태를 실패로 설정
+                        throw e // 예외를 던져서 이후 단계를 실행하지 않도록 함
+                    }
+                }
+            }
+        }
 
     //     stage('Publish HTML Report') {
     //         steps {
