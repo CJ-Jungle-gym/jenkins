@@ -1,6 +1,9 @@
 //과연...
 pipeline {
     agent any
+    tools {
+        sonarQube 'SonarQube Scanner'
+    }
 
     environment {
         AWS_REGION = 'ap-northeast-2'
@@ -44,55 +47,64 @@ pipeline {
         }
         
         // 이미지 스캔
-        stage('Scan Image with Trivy') {
-            steps {
-                script {
-                    try {
-                        // Trivy로 이미지 스캔하고 HTML 리포트 생성
-                        sh 'trivy image --format template --template "@/root/html.tpl" --output trivy-report.html "${ECR_REPO}:${IMAGE_TAG}"'
-                        echo "Trivy scan completed"
-                    } catch (Exception e) {
-                        echo "Trivy scan failed: ${e.getMessage()}"
-                        currentBuild.result = 'FAILURE' // 빌드 상태를 실패로 설정
-                        throw e // 예외를 던져서 이후 단계를 실행하지 않도록 함
-                    }
-                }
-            }
-        }
+        // stage('Scan Image with Trivy') {
+        //     steps {
+        //         script {
+        //             try {
+        //                 // Trivy로 이미지 스캔하고 HTML 리포트 생성
+        //                 sh 'trivy image --format template --template "@/root/html.tpl" --output trivy-report.html "${ECR_REPO}:${IMAGE_TAG}"'
+        //                 echo "Trivy scan completed"
+        //             } catch (Exception e) {
+        //                 echo "Trivy scan failed: ${e.getMessage()}"
+        //                 currentBuild.result = 'FAILURE' // 빌드 상태를 실패로 설정
+        //                 throw e // 예외를 던져서 이후 단계를 실행하지 않도록 함
+        //             }
+        //         }
+        //     }
+        // }
 
-        stage('Publish HTML Report') {
-            steps {
-                script {
-                    // HTML 리포트가 존재하는지 확인하고 리포트를 출력
-                    if (fileExists('trivy-report.html')) {
-                        echo "Trivy report found, publishing HTML report"
-                        publishHTML(target: [
-                            allowMissing: false,
-                            alwaysLinkToLastBuild: false,
-                            keepAll: false,
-                            reportDir: '.',
-                            reportFiles: 'trivy-report.html',  // 리포트 파일 경로
-                            reportName: 'Trivy Vulnerability Report'
-                        ])
-                    } else {
-                        echo "Trivy report not found, skipping HTML report publishing"
-                    }
-                }
-            }
-        }
+        // stage('Publish HTML Report') {
+        //     steps {
+        //         script {
+        //             // HTML 리포트가 존재하는지 확인하고 리포트를 출력
+        //             if (fileExists('trivy-report.html')) {
+        //                 echo "Trivy report found, publishing HTML report"
+        //                 publishHTML(target: [
+        //                     allowMissing: false,
+        //                     alwaysLinkToLastBuild: false,
+        //                     keepAll: false,
+        //                     reportDir: '.',
+        //                     reportFiles: 'trivy-report.html',  // 리포트 파일 경로
+        //                     reportName: 'Trivy Vulnerability Report'
+        //                 ])
+        //             } else {
+        //                 echo "Trivy report not found, skipping HTML report publishing"
+        //             }
+        //         }
+        //     }
+        // }
 
-        stage('OWASP Dependency-Check Vulnerabilities') {
-            steps {
-                dir("src"){
-                    dependencyCheck additionalArguments: ''' 
-                    -o './'
-                    -s './'
-                    -f 'ALL' 
-                    --prettyPrint''', odcInstallation: 'owasp'
+     //    stage('OWASP Dependency-Check Vulnerabilities') {
+     //        steps {
+     //            dir("src"){
+     //                dependencyCheck additionalArguments: ''' 
+     //                -o './'
+     //                -s './'
+     //                -f 'ALL' 
+     //                --prettyPrint''', odcInstallation: 'owasp'
     
-                    dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+     //                dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+     //            }
+     //        }
+    	// }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube Scanner') {
+                    sh "./gradlew sonar"
                 }
             }
-    	}
+        }
+        
     }
 }
