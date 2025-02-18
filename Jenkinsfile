@@ -42,14 +42,20 @@ pipeline {
                 }
             }
         }
-        
+
+        stage("download trivy report format"){
+            steps{
+                sh 'docker run --rm -v trivy-data:/root -u 0 curlimages/curl curl -o /root/html.tpl https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/html.tpl'
+
+            }
+        }        
         // 이미지 스캔
         stage('Scan Image with Trivy') {
             steps {
                 script {
                     try {
                         // Trivy로 이미지 스캔하고 HTML 리포트 생성
-                        sh "trivy image --format template --output trivy-report.html ${ECR_REPO}:${IMAGE_TAG}"
+                        sh "trivy image --format template --template "@/root/.cache/html.tpl" --output trivy-report.html ${ECR_REPO}:${IMAGE_TAG}"
                         echo "Trivy scan completed"
                     } catch (Exception e) {
                         echo "Trivy scan failed: ${e.getMessage()}"
