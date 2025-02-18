@@ -22,26 +22,26 @@ pipeline {
             }
         }
 
-        // 이미지 빌드 및 푸시
-        stage('Build Image') {
-            steps {
-                script {
-                    docker.withRegistry("https://${ECR_REPO}/", '9b45eaf4-a184-44eb-ba8c-8e20a854de1b') {
-                        myapp = docker.build('jenkins-images')
-                    }
-                }
-            }
-        }
+        // // 이미지 빌드 및 푸시
+        // stage('Build Image') {
+        //     steps {
+        //         script {
+        //             docker.withRegistry("https://${ECR_REPO}/", '9b45eaf4-a184-44eb-ba8c-8e20a854de1b') {
+        //                 myapp = docker.build('jenkins-images')
+        //             }
+        //         }
+        //     }
+        // }
         
-        stage('Push Image to ECR') {
-            steps {
-                script {
-                    docker.withRegistry("https://${ECR_REPO}/", '9b45eaf4-a184-44eb-ba8c-8e20a854de1b') {
-                        myapp.push("${IMAGE_TAG}")
-                    }
-                }
-            }
-        }
+        // stage('Push Image to ECR') {
+        //     steps {
+        //         script {
+        //             docker.withRegistry("https://${ECR_REPO}/", '9b45eaf4-a184-44eb-ba8c-8e20a854de1b') {
+        //                 myapp.push("${IMAGE_TAG}")
+        //             }
+        //         }
+        //     }
+        // }
         
         // 이미지 스캔
         // stage('Scan Image with Trivy') {
