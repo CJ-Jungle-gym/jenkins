@@ -65,11 +65,12 @@ pipeline {
                 script {
                     // HTML 리포트가 존재하는지 확인하고 리포트를 출력
                     if (fileExists('trivy-report.html')) {
+                        echo "Trivy report found, publishing HTML report"
                         publishHTML([
                             allowMissing: false,
                             alwaysLinkToLastBuild: false,
                             keepAll: false,
-                            reportDir: '',
+                            reportDir: '.',
                             reportFiles: 'trivy-report.html',  // 리포트 파일 경로
                             reportName: 'Trivy Vulnerability Report'
                         ])
