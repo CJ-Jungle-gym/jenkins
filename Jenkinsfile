@@ -28,7 +28,9 @@ pipeline {
                     dependencyCheck additionalArguments: ''' 
                     -o './'
                     -s './'
-                    -f 'ALL' 
+                    -f 'ALL'
+                    --nvd-mirror https://mirror.nvd.nist.gov
+                    --caches './dependency-check-cache'
                     --prettyPrint''', odcInstallation: 'owasp'
     
                     dependencyCheckPublisher pattern: 'dependency-check-report.xml'
