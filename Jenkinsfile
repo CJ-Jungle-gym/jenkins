@@ -29,7 +29,7 @@ pipeline {
                     -o './'
                     -s './'
                     -f 'ALL'
-                    --nvd-mirror '8f6d2492-c22e-4824-bfe8-95c7664dec4a'
+                    --nvdApiKey '8f6d2492-c22e-4824-bfe8-95c7664dec4a'
                     --caches './dependency-check-cache'
                     --prettyPrint''', odcInstallation: 'owasp'
     
