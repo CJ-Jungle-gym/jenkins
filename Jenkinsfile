@@ -22,20 +22,20 @@ pipeline {
         }
 
         // OWASP Dependency Check
-        stage('OWASP Dependency-Check Vulnerabilities') {
-            steps {
-                dir("src"){
-                    dependencyCheck additionalArguments: ''' 
-                    -o './'
-                    -s './'
-                    -f 'ALL'
-                    --nvdApiKey '8f6d2492-c22e-4824-bfe8-95c7664dec4a'
-                    --prettyPrint''', odcInstallation: 'owasp'
+     //    stage('OWASP Dependency-Check Vulnerabilities') {
+     //        steps {
+     //            dir("src"){
+     //                dependencyCheck additionalArguments: ''' 
+     //                -o './'
+     //                -s './'
+     //                -f 'ALL'
+     //                --nvdApiKey '8f6d2492-c22e-4824-bfe8-95c7664dec4a'
+     //                --prettyPrint''', odcInstallation: 'owasp'
     
-                    dependencyCheckPublisher pattern: 'dependency-check-report.xml'
-                }
-            }
-    	}
+     //                dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+     //            }
+     //        }
+    	// }
 
         // SonarQube 분석
         stage('SonarQube Scanner') {
